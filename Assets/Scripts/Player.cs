@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 public class Player : MonoBehaviour
 {
@@ -6,6 +6,8 @@ public class Player : MonoBehaviour
     public float strength = 5f;
     public float gravity = -9.81f;
     public float tilt = 5f;
+
+    public AudioSource jumpSound;
 
     private SpriteRenderer spriteRenderer;
     private Vector3 direction;
@@ -19,6 +21,9 @@ public class Player : MonoBehaviour
     private void Start()
     {
         InvokeRepeating(nameof(AnimateSprite), 0.15f, 0.15f);
+
+        jumpSound = GetComponent<AudioSource>();
+
     }
 
     private void OnEnable()
@@ -35,9 +40,11 @@ public class Player : MonoBehaviour
             direction = Vector3.up * strength;
         }
 
+        // ustawienie grawitacji i aktu pozycji
         direction.y += gravity * Time.deltaTime;
         transform.position += direction * Time.deltaTime;
 
+        // nachylenie gracza
         Vector3 rotation = transform.eulerAngles;
         rotation.z = direction.y * tilt;
         transform.eulerAngles = rotation;
